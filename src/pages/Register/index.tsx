@@ -20,6 +20,11 @@ export const RegisterPage = () => {
       const request = { email, password, name };
       await createUser(request);
 
+      toast({
+        variant: "success",
+        title: "Success!",
+        description: "The user was created successfully!",
+      });
       navigate("/login");
     } catch (e) {
       console.error(e);

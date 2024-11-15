@@ -9,28 +9,38 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { FC, useState } from "react";
+import { FC } from "react";
 
 type LoginCardProps = {
-  loginCallback: (data: { email: string; password: string }) => Promise<void>;
+  loginCallback: () => Promise<void>;
   registerCallback: () => void;
+  email: string;
+  setEmail: (email: string) => void;
+  password: string;
+  setPassword: (password: string) => void;
 };
 
 export const LoginCard: FC<LoginCardProps> = ({
   loginCallback,
   registerCallback,
+  email,
+  password,
+  setEmail,
+  setPassword,
 }) => {
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-
   return (
-    <Card className="w-[410px]">
-      <CardHeader>
-        <CardTitle>Manage your tasks</CardTitle>
-        <CardDescription>Organize your tasks very easily.</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <form>
+    <form
+      onSubmit={(ev) => {
+        ev.preventDefault();
+        loginCallback();
+      }}
+    >
+      <Card className="w-[410px]">
+        <CardHeader>
+          <CardTitle>Manage your tasks</CardTitle>
+          <CardDescription>Organize your tasks very easily.</CardDescription>
+        </CardHeader>
+        <CardContent>
           <div className="grid w-full items-center gap-4">
             <div className="flex flex-col space-y-1.5">
               <Label className="text-left" htmlFor="email">
@@ -61,24 +71,23 @@ export const LoginCard: FC<LoginCardProps> = ({
               />
             </div>
           </div>
-        </form>
-      </CardContent>
-      <CardFooter className="flex flex-col gap-3">
-        <Button
-          onClick={() => {
-            loginCallback({ email, password });
-          }}
-          className="w-full"
-        >
-          Login
-        </Button>
-        <hr className="border-t-[1.5px] border-solid border-t-gray-300 w-full" />
-        <p className="text-sm text-gray-500">Don't have an account?</p>
-        <hr className="border-t-[1.5px] border-solid border-t-gray-300 w-full" />
-        <Button onClick={registerCallback} className="w-full" variant="outline">
-          Create account
-        </Button>
-      </CardFooter>
-    </Card>
+        </CardContent>
+        <CardFooter className="flex flex-col gap-3">
+          <Button type="submit" className="w-full">
+            Login
+          </Button>
+          <hr className="border-t-[1.5px] border-solid border-t-gray-300 w-full" />
+          <p className="text-sm text-gray-500">Don't have an account?</p>
+          <hr className="border-t-[1.5px] border-solid border-t-gray-300 w-full" />
+          <Button
+            onClick={registerCallback}
+            className="w-full"
+            variant="outline"
+          >
+            Create account
+          </Button>
+        </CardFooter>
+      </Card>
+    </form>
   );
 };

@@ -39,13 +39,18 @@ export const TaskCard = ({
   status?: StatusEnum;
 }) => {
   return (
-    <Card className="w-[410px]">
-      <CardHeader>
-        <CardTitle>{titlePage}</CardTitle>
-        <CardDescription>{descriptionPage}</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <form>
+    <form
+      onSubmit={(ev) => {
+        ev.preventDefault();
+        onSave();
+      }}
+    >
+      <Card className="w-[410px]">
+        <CardHeader>
+          <CardTitle>{titlePage}</CardTitle>
+          <CardDescription>{descriptionPage}</CardDescription>
+        </CardHeader>
+        <CardContent>
           <div className="grid w-full items-center gap-4">
             <div className="flex flex-col space-y-1.5">
               <Label className="text-left" htmlFor="title">
@@ -83,13 +88,13 @@ export const TaskCard = ({
               />
             </div>
           </div>
-        </form>
-      </CardContent>
-      <CardFooter className="flex flex-col gap-3">
-        <Button onClick={onSave} disabled={!isValid} className="w-full">
-          {buttonLabel}
-        </Button>
-      </CardFooter>
-    </Card>
+        </CardContent>
+        <CardFooter className="flex flex-col gap-3">
+          <Button type="submit" disabled={!isValid} className="w-full">
+            {buttonLabel}
+          </Button>
+        </CardFooter>
+      </Card>
+    </form>
   );
 };

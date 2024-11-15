@@ -106,6 +106,11 @@ export const TasksPage = () => {
         setIdToDelete(undefined);
         setDialogOpen(false);
         await handleGetTasks();
+        toast({
+          variant: "success",
+          title: "Success!",
+          description: "The task was deleted successfully!",
+        });
       }
     } catch (e) {
       console.error(e);

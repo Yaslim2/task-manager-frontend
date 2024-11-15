@@ -27,7 +27,11 @@ export const UpdateTask = () => {
     try {
       const request = { title, description, status: status! };
       await updateTask(+id, request);
-
+      toast({
+        variant: "success",
+        title: "Success!",
+        description: "The task was updated successfully!",
+      });
       goBack();
     } catch (e) {
       console.error(e);

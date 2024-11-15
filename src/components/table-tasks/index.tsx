@@ -230,7 +230,10 @@ export function TableTasks({
               >
                 Previous
               </Button>
-              <Button variant={"ghost"} className="font-bold text-lg">
+              <Button
+                variant={"ghost"}
+                className="font-bold text-lg bg-transparent border-none"
+              >
                 {page}
               </Button>
               <Button

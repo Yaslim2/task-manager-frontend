@@ -19,7 +19,11 @@ export const RegisterTask = () => {
     try {
       const request = { title, description, status: status! };
       await createTask(request);
-
+      toast({
+        variant: "success",
+        title: "Success!",
+        description: "The task was created successfully!",
+      });
       goBack();
     } catch (e) {
       console.error(e);

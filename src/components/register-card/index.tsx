@@ -30,13 +30,18 @@ export const RegisterCard = ({
   onSave: () => Promise<void>;
 }) => {
   return (
-    <Card className="w-[410px]">
-      <CardHeader>
-        <CardTitle>Manage your tasks</CardTitle>
-        <CardDescription>Organize your tasks very easily.</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <form>
+    <form
+      onSubmit={(ev) => {
+        ev.preventDefault();
+        onSave();
+      }}
+    >
+      <Card className="w-[410px]">
+        <CardHeader>
+          <CardTitle>Manage your tasks</CardTitle>
+          <CardDescription>Organize your tasks very easily.</CardDescription>
+        </CardHeader>
+        <CardContent>
           <div className="grid w-full items-center gap-4">
             <div className="flex flex-col space-y-1.5">
               <Label className="text-left" htmlFor="name">
@@ -81,13 +86,13 @@ export const RegisterCard = ({
               />
             </div>
           </div>
-        </form>
-      </CardContent>
-      <CardFooter className="flex flex-col gap-3">
-        <Button onClick={onSave} disabled={!isValid} className="w-full">
-          Register
-        </Button>
-      </CardFooter>
-    </Card>
+        </CardContent>
+        <CardFooter className="flex flex-col gap-3">
+          <Button type="submit" disabled={!isValid} className="w-full">
+            Register
+          </Button>
+        </CardFooter>
+      </Card>
+    </form>
   );
 };

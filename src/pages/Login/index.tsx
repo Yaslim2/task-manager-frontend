@@ -2,8 +2,12 @@ import { LoginCard } from "@/components/login-card";
 import { toast } from "@/hooks/use-toast";
 import { useAuth } from "@/shared/context/auth";
 import { authenticate } from "@/shared/services/auth-service";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 export const LoginPage = () => {
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+
   const { login } = useAuth();
 
   const navigate = useNavigate();
@@ -12,9 +16,9 @@ export const LoginPage = () => {
     navigate("/register");
   };
 
-  const handleLogin = async (data: { email: string; password: string }) => {
+  const handleLogin = async () => {
     try {
-      const { access_token } = await authenticate(data);
+      const { access_token } = await authenticate({ password, email });
 
       login(access_token);
 
@@ -39,6 +43,10 @@ export const LoginPage = () => {
         </h2>
       </div>
       <LoginCard
+        email={email}
+        password={password}
+        setEmail={setEmail}
+        setPassword={setPassword}
         loginCallback={handleLogin}
         registerCallback={redirectToRegisterPage}
       />
