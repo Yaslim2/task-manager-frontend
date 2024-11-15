@@ -97,6 +97,9 @@ export function TableTasks({
   handleChangeFilterName,
   handleChangeStatus,
   isLoading,
+  handleCreateTask,
+  handleEditTask,
+  handleDeleteTask,
 }: {
   data: Tasks[];
   canNextPage: boolean;
@@ -106,8 +109,11 @@ export function TableTasks({
   page: number;
   filterName?: string;
   handleChangeFilterName: (name: string) => void;
-  handleChangeStatus: (status: StatusEnum) => void;
+  handleChangeStatus: (status?: StatusEnum) => void;
   isLoading: boolean;
+  handleCreateTask: () => void;
+  handleEditTask: (task: Tasks) => void;
+  handleDeleteTask: (id: string) => void;
 }) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -138,16 +144,21 @@ export function TableTasks({
 
   return (
     <div className="w-full">
-      <div className="flex items-center py-4 gap-4">
-        <Input
-          value={filterName}
-          onChange={(ev) => {
-            handleChangeFilterName(ev.target.value);
-          }}
-          placeholder="Filter tasks..."
-          className="max-w-sm"
-        />
-        <FilterStatus handleChangeStatus={handleChangeStatus} />
+      <div className="flex items-center justify-between py-4 gap-4">
+        <div className="flex items-center gap-4">
+          <Input
+            value={filterName}
+            onChange={(ev) => {
+              handleChangeFilterName(ev.target.value);
+            }}
+            placeholder="Filter tasks..."
+            className="max-w-sm"
+          />
+          <FilterStatus handleChangeStatus={handleChangeStatus} />
+        </div>
+        <Button onClick={handleCreateTask} variant="outline" size="lg">
+          Create task
+        </Button>
       </div>
       {!isLoading ? (
         <>
@@ -179,7 +190,15 @@ export function TableTasks({
                       data-state={row.getIsSelected() && "selected"}
                     >
                       {row.getVisibleCells().map((cell) => (
-                        <TableCell key={cell.id}>
+                        <TableCell
+                          onClick={() => {
+                            if (cell.column.id === "edit")
+                              handleEditTask(row.original);
+                            if (cell.column.id === "delete")
+                              handleDeleteTask(row.original.id);
+                          }}
+                          key={cell.id}
+                        >
                           {flexRender(
                             cell.column.columnDef.cell,
                             cell.getContext()

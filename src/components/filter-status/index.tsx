@@ -37,12 +37,15 @@ const options = [
 
 export function FilterStatus({
   handleChangeStatus,
+  widthFull,
+  status,
 }: {
-  filterStatus?: StatusEnum;
-  handleChangeStatus: (status: StatusEnum) => void;
+  handleChangeStatus: (status?: StatusEnum) => void;
+  widthFull?: boolean;
+  status?: StatusEnum;
 }) {
   const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState("");
+  const [value, setValue] = React.useState(status || "");
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -51,7 +54,7 @@ export function FilterStatus({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-[200px] justify-between"
+          className={cn("justify-between", widthFull ? "w-full" : "w-[200px]")}
         >
           {value
             ? options.find((option) => option.value === value)?.label
@@ -71,7 +74,11 @@ export function FilterStatus({
                   value={option.value}
                   onSelect={(currentValue) => {
                     setValue(currentValue === value ? "" : currentValue);
-                    handleChangeStatus(currentValue as StatusEnum);
+                    handleChangeStatus(
+                      currentValue === value
+                        ? undefined
+                        : (currentValue as StatusEnum)
+                    );
                     setOpen(false);
                   }}
                 >

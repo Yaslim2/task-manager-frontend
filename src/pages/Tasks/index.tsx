@@ -1,9 +1,16 @@
 import { StatusEnum, TableTasks, Tasks } from "@/components/table-tasks";
+import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { getTasks } from "@/shared/services/auth-service";
+import { useAuth } from "@/shared/context/auth";
+import { getTasks } from "@/shared/services/tasks-service";
+import { LogOutIcon } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const TasksPage = () => {
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+
   const [tasks, setTasks] = useState<Tasks[]>([]);
 
   const [filterName, setFilterName] = useState<string>();
@@ -29,7 +36,6 @@ export const TasksPage = () => {
         page,
         status: filterStatus,
         title: filterName,
-        limit: 1,
       });
 
       setCanNextPage(data.currentPage < data.totalPages);
@@ -52,13 +58,40 @@ export const TasksPage = () => {
     });
   };
 
+  const handleRedirectRegisterTask = () => {
+    navigate("/register-task");
+  };
+
+  const handleRedirectUpdateTask = (task: Tasks) => {
+    navigate("/update-task", { state: { task } });
+  };
+
+  const handleDeleteTask = (id: string) => {
+    console.log("delete", id);
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login", { replace: true });
+  };
+
   useEffect(() => {
     handleGetTasks();
   }, [handleGetTasks]);
 
   return (
     <>
-      <h1 className="font-bold">Welcome to Task Manager</h1>
+      <div className="relative">
+        <h1 className="font-bold">Welcome to Task Manager</h1>
+        <Button
+          className="absolute top-[-50px] right-0"
+          variant="outline"
+          size="icon"
+          onClick={handleLogout}
+        >
+          <LogOutIcon />
+        </Button>
+      </div>
       <Card className="w-[900px] p-4 mt-6">
         <TableTasks
           isLoading={isLoading}
@@ -71,6 +104,9 @@ export const TasksPage = () => {
           filterName={filterName}
           handleChangeFilterName={setFilterName}
           handleChangeStatus={setFilterStatus}
+          handleCreateTask={handleRedirectRegisterTask}
+          handleEditTask={handleRedirectUpdateTask}
+          handleDeleteTask={handleDeleteTask}
         />
       </Card>
     </>

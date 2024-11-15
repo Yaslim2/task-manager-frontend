@@ -10,6 +10,8 @@ import { RegisterPage } from "./pages/Register";
 import { ProtectedRoute, PublicRoute } from "./components/auth-redirect";
 import { TasksPage } from "./pages/Tasks";
 import { useAuth } from "./shared/context/auth";
+import { UpdateTask } from "./pages/UpdateTask";
+import { RegisterTask } from "./pages/RegisterTask";
 
 function App() {
   const { isAuthenticated } = useAuth();
@@ -37,6 +39,8 @@ function App() {
           }
         >
           <Route path="/tasks" element={<TasksPage />} />
+          <Route path="/register-task" element={<RegisterTask />} />
+          <Route path="/update-task" element={<UpdateTask />} />
         </Route>
 
         <Route
