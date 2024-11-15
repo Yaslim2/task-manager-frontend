@@ -1,50 +1,67 @@
-# React + TypeScript + Vite
+# Guia de Configuração e Execução do Projeto Front-End
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este guia fornece instruções passo a passo para configurar e executar a aplicação front-end localmente.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## **Pré-requisitos**
 
-## Expanding the ESLint configuration
+Antes de executar o projeto, certifique-se de que você tem os seguintes itens instalados:
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- **Node.js** (versão 16 ou superior). Você pode baixá-lo no [site oficial do Node.js](https://nodejs.org/).
+- **npm** (vem junto com o Node.js) ou **yarn** (instale com o comando `npm install -g yarn`).
+- **Git**. Você pode baixá-lo no [site oficial do Git](https://git-scm.com/).
 
-- Configure the top-level `parserOptions` property like this:
+---
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+## **Passos de Instalação**
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+1. Clone o repositório:
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+   - Use o Git para clonar o repositório do projeto: `git clone <url-do-repositorio>` (substitua `<url-do-repositorio>` pela URL real do repositório).
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+2. Navegue até o diretório do projeto:
+
+   - Use o comando: `cd <nome-da-pasta-do-projeto>` (substitua `<nome-da-pasta-do-projeto>` pelo nome da pasta criada após o clone).
+
+3. Instale as dependências:
+   - Se estiver usando npm: `npm install`.
+   - Se estiver usando yarn: `yarn install`.
+
+---
+
+## **Configuração do Ambiente**
+
+1. Crie um arquivo `.env`:
+
+   - No diretório raiz do projeto, crie um arquivo chamado `.env`.
+
+2. Adicione as variáveis de ambiente necessárias:
+   - Adicione o seguinte conteúdo ao arquivo `.env`:  
+     `VITE_APP_API_BASE_URL=http://localhost:5000`  
+     Substitua `http://localhost:5000` pela URL do seu servidor de API, se for diferente.
+
+---
+
+## **Executar a Aplicação**
+
+1. Inicie o servidor de desenvolvimento:
+
+   - Se estiver usando npm: `npm run dev`.
+   - Se estiver usando yarn: `yarn dev`.
+
+2. Acesse a aplicação:
+   - Abra o navegador e vá para `http://localhost:5173`.
+
+---
+
+## **Scripts Disponíveis**
+
+Aqui estão os scripts comuns que você pode usar no projeto:
+
+- `npm run dev` ou `yarn dev`: Inicia o servidor de desenvolvimento.
+- `npm run build` ou `yarn build`: Cria a versão de produção da aplicação.
+- `npm run preview` ou `yarn preview`: Visualiza a versão de produção localmente.
+- `npm run lint` ou `yarn lint`: Executa o linter de código para identificar problemas de sintaxe ou formatação.
+
+---
