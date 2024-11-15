@@ -1,7 +1,7 @@
 import { StatusEnum, Tasks } from "@/components/table-tasks";
 import { TaskCard } from "@/components/task-card";
 import { Button } from "@/components/ui/button";
-import { createTask, updateTask } from "@/shared/services/tasks-service";
+import { updateTask } from "@/shared/services/tasks-service";
 import { ChevronLeft } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
