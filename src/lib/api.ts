@@ -26,7 +26,7 @@ api.interceptors.response.use(
       window.location.replace("/login");
     }
 
-    return Promise.reject(error); // Retorna o erro para que o componente possa lidar com ele
+    return Promise.reject(error);
   }
 );
 
