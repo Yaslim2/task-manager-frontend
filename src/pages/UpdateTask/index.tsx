@@ -1,6 +1,7 @@
 import { StatusEnum, Tasks } from "@/components/table-tasks";
 import { TaskCard } from "@/components/task-card";
 import { Button } from "@/components/ui/button";
+import { toast } from "@/hooks/use-toast";
 import { updateTask } from "@/shared/services/tasks-service";
 import { ChevronLeft } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
@@ -23,10 +24,20 @@ export const UpdateTask = () => {
   const [isValid, setIsValid] = useState<boolean>(false);
 
   const handleUpdateTask = async () => {
-    const request = { title, description, status: status! };
-    await updateTask(+id, request);
+    try {
+      const request = { title, description, status: status! };
+      await updateTask(+id, request);
 
-    goBack();
+      goBack();
+    } catch (error) {
+      console.error(error);
+      toast({
+        variant: "destructive",
+        title: "Something went wrong",
+        description:
+          "An error occurred while updating the task. Please try again later.",
+      });
+    }
   };
 
   const goBack = () => {

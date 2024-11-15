@@ -2,6 +2,7 @@ import { DeleteTaskDialog } from "@/components/delete-task-dialog";
 import { StatusEnum, TableTasks, Tasks } from "@/components/table-tasks";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { toast } from "@/hooks/use-toast";
 import { useAuth } from "@/shared/context/auth";
 import { deleteTask, getTasks } from "@/shared/services/tasks-service";
 import { LogOutIcon } from "lucide-react";
@@ -10,6 +11,9 @@ import { useNavigate } from "react-router-dom";
 
 export const TasksPage = () => {
   const { logout } = useAuth();
+
+  const [error, setError] = useState<boolean>(false);
+
   const navigate = useNavigate();
 
   const [tasks, setTasks] = useState<Tasks[]>([]);
@@ -35,21 +39,35 @@ export const TasksPage = () => {
     if (timeoutId.current) {
       clearTimeout(timeoutId.current);
     }
-    setIsLoading(true);
-    timeoutId.current = setTimeout(async () => {
-      const data = await getTasks({
-        page,
-        status: filterStatus,
-        title: filterName,
-      });
+    if (!error) {
+      setIsLoading(true);
+      timeoutId.current = setTimeout(async () => {
+        try {
+          const data = await getTasks({
+            page,
+            status: filterStatus,
+            title: filterName,
+          });
 
-      setCanNextPage(data.currentPage < data.totalPages);
-      setCanPrevPage(data.currentPage > 1);
+          setCanNextPage(data.currentPage < data.totalPages);
+          setCanPrevPage(data.currentPage > 1);
 
-      setTasks(data.tasks);
-      setIsLoading(false);
-    }, 500);
-  }, [page, filterStatus, filterName]);
+          setTasks(data.tasks);
+          setIsLoading(false);
+        } catch (error) {
+          setError(true);
+          setIsLoading(false);
+          console.error(error);
+          toast({
+            variant: "destructive",
+            title: "Something went wrong",
+            description:
+              "An error occurred while fetching the tasks. Please try again later.",
+          });
+        }
+      }, 500);
+    }
+  }, [page, filterStatus, filterName, error]);
 
   const handleNextPage = () => {
     setPage((value) => {
@@ -82,11 +100,21 @@ export const TasksPage = () => {
   };
 
   const onSaveDialog = async () => {
-    if (idToDelete) {
-      await deleteTask(+idToDelete);
-      setIdToDelete(undefined);
-      setDialogOpen(false);
-      await handleGetTasks();
+    try {
+      if (idToDelete) {
+        await deleteTask(+idToDelete);
+        setIdToDelete(undefined);
+        setDialogOpen(false);
+        await handleGetTasks();
+      }
+    } catch (error) {
+      console.error(error);
+      toast({
+        variant: "destructive",
+        title: "Something went wrong",
+        description:
+          "An error occurred while deleting the task. Please try again later.",
+      });
     }
   };
 

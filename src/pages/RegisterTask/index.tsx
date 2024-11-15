@@ -1,6 +1,7 @@
 import { StatusEnum } from "@/components/table-tasks";
 import { TaskCard } from "@/components/task-card";
 import { Button } from "@/components/ui/button";
+import { toast } from "@/hooks/use-toast";
 import { createTask } from "@/shared/services/tasks-service";
 import { ChevronLeft } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
@@ -15,10 +16,20 @@ export const RegisterTask = () => {
   const [isValid, setIsValid] = useState<boolean>(false);
 
   const handleCreateTask = async () => {
-    const request = { title, description, status: status! };
-    await createTask(request);
+    try {
+      const request = { title, description, status: status! };
+      await createTask(request);
 
-    goBack();
+      goBack();
+    } catch (error) {
+      console.error(error);
+      toast({
+        variant: "destructive",
+        title: "Something went wrong",
+        description:
+          "An error occurred while creating the task. Please try again later.",
+      });
+    }
   };
 
   const goBack = () => {

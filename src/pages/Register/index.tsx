@@ -1,5 +1,6 @@
 import { RegisterCard } from "@/components/register-card";
 import { Button } from "@/components/ui/button";
+import { toast } from "@/hooks/use-toast";
 import { createUser } from "@/shared/services/user-service";
 import { isValidEmail } from "@/shared/utils/isValidEmail";
 import { ChevronLeft } from "lucide-react";
@@ -15,10 +16,20 @@ export const RegisterPage = () => {
   const [isValid, setIsValid] = useState<boolean>(false);
 
   const handleCreateUser = async () => {
-    const request = { email, password, name };
-    await createUser(request);
+    try {
+      const request = { email, password, name };
+      await createUser(request);
 
-    navigate("/login");
+      navigate("/login");
+    } catch (e) {
+      console.error(e);
+      toast({
+        variant: "destructive",
+        title: "Something went wrong",
+        description:
+          "An error occurred while creating the user. Please try again later.",
+      });
+    }
   };
 
   const checkValid = useCallback(() => {
