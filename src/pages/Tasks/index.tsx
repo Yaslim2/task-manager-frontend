@@ -54,10 +54,10 @@ export const TasksPage = () => {
 
           setTasks(data.tasks);
           setIsLoading(false);
-        } catch (error) {
+        } catch (e) {
           setError(true);
           setIsLoading(false);
-          console.error(error);
+          console.error(e);
           toast({
             variant: "destructive",
             title: "Something went wrong",
@@ -107,8 +107,8 @@ export const TasksPage = () => {
         setDialogOpen(false);
         await handleGetTasks();
       }
-    } catch (error) {
-      console.error(error);
+    } catch (e) {
+      console.error(e);
       toast({
         variant: "destructive",
         title: "Something went wrong",

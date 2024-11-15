@@ -29,8 +29,8 @@ export const UpdateTask = () => {
       await updateTask(+id, request);
 
       goBack();
-    } catch (error) {
-      console.error(error);
+    } catch (e) {
+      console.error(e);
       toast({
         variant: "destructive",
         title: "Something went wrong",

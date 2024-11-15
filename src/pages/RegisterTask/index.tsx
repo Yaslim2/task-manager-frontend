@@ -21,8 +21,8 @@ export const RegisterTask = () => {
       await createTask(request);
 
       goBack();
-    } catch (error) {
-      console.error(error);
+    } catch (e) {
+      console.error(e);
       toast({
         variant: "destructive",
         title: "Something went wrong",
