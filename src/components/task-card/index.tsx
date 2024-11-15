@@ -24,6 +24,7 @@ export const TaskCard = ({
   descriptionPage,
   titlePage,
   status,
+  buttonLabel,
 }: {
   title: string;
   setTitle: (title: string) => void;
@@ -34,6 +35,7 @@ export const TaskCard = ({
   onSave: () => Promise<void>;
   titlePage: string;
   descriptionPage: string;
+  buttonLabel: string;
   status?: StatusEnum;
 }) => {
   return (
@@ -85,7 +87,7 @@ export const TaskCard = ({
       </CardContent>
       <CardFooter className="flex flex-col gap-3">
         <Button onClick={onSave} disabled={!isValid} className="w-full">
-          Create
+          {buttonLabel}
         </Button>
       </CardFooter>
     </Card>

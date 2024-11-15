@@ -57,6 +57,7 @@ export const RegisterTask = () => {
         onSave={handleCreateTask}
         titlePage="Register Task"
         descriptionPage="Create the task that you want to manage."
+        buttonLabel="Create"
       />
     </>
   );

@@ -1,8 +1,9 @@
+import { DeleteTaskDialog } from "@/components/delete-task-dialog";
 import { StatusEnum, TableTasks, Tasks } from "@/components/table-tasks";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useAuth } from "@/shared/context/auth";
-import { getTasks } from "@/shared/services/tasks-service";
+import { deleteTask, getTasks } from "@/shared/services/tasks-service";
 import { LogOutIcon } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -12,6 +13,10 @@ export const TasksPage = () => {
   const navigate = useNavigate();
 
   const [tasks, setTasks] = useState<Tasks[]>([]);
+
+  const [dialogOpen, setDialogOpen] = useState<boolean>(false);
+
+  const [idToDelete, setIdToDelete] = useState<string>();
 
   const [filterName, setFilterName] = useState<string>();
 
@@ -67,7 +72,22 @@ export const TasksPage = () => {
   };
 
   const handleDeleteTask = (id: string) => {
-    console.log("delete", id);
+    setDialogOpen(true);
+    setIdToDelete(id);
+  };
+
+  const onCancelDialog = () => {
+    setIdToDelete(undefined);
+    setDialogOpen(false);
+  };
+
+  const onSaveDialog = async () => {
+    if (idToDelete) {
+      await deleteTask(+idToDelete);
+      setIdToDelete(undefined);
+      setDialogOpen(false);
+      await handleGetTasks();
+    }
   };
 
   const handleLogout = () => {
@@ -92,6 +112,11 @@ export const TasksPage = () => {
           <LogOutIcon />
         </Button>
       </div>
+      <DeleteTaskDialog
+        onSave={onSaveDialog}
+        onCancel={onCancelDialog}
+        open={dialogOpen}
+      />
       <Card className="w-[900px] p-4 mt-6">
         <TableTasks
           isLoading={isLoading}

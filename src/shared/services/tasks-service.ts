@@ -28,3 +28,22 @@ export const createTask = async (data: {
 
   return response.data;
 };
+
+export const updateTask = async (
+  id: number,
+  data: {
+    title: string;
+    description: string;
+    status: StatusEnum;
+  }
+) => {
+  const response = await api.put(`/tasks/${id}`, data);
+
+  return response.data;
+};
+
+export const deleteTask = async (id: number) => {
+  const response = await api.delete(`/tasks/${id}`);
+
+  return response.data;
+};

@@ -1,7 +1,7 @@
 import { StatusEnum, Tasks } from "@/components/table-tasks";
 import { TaskCard } from "@/components/task-card";
 import { Button } from "@/components/ui/button";
-import { createTask } from "@/shared/services/tasks-service";
+import { createTask, updateTask } from "@/shared/services/tasks-service";
 import { ChevronLeft } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -9,6 +9,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 export const UpdateTask = () => {
   const location = useLocation();
   const {
+    id,
     title: initialTitle,
     description: initialEmail,
     status: initialStatus,
@@ -23,7 +24,7 @@ export const UpdateTask = () => {
 
   const handleUpdateTask = async () => {
     const request = { title, description, status: status! };
-    await createTask(request);
+    await updateTask(+id, request);
 
     goBack();
   };
@@ -65,6 +66,7 @@ export const UpdateTask = () => {
         status={status}
         descriptionPage="Update the task that you want to manage."
         titlePage="Update Task"
+        buttonLabel="Update"
       />
     </>
   );
